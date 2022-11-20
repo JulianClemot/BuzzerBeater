@@ -34,8 +34,11 @@ android {
 dependencies {
     implementation(project(":shared"))
     implementation(libs.core)
+    implementation(libs.timber)
+    implementation(libs.navigation)
     implementation(libs.lifecycle)
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.di)
 
     androidTestImplementation(libs.bundles.uiTesting)
     androidTestImplementation(libs.bundles.composeTesting)

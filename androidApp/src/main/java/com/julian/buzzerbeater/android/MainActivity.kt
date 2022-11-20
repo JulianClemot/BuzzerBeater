@@ -10,21 +10,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.julian.buzzerbeater.Greeting
-import com.julian.myapplication.ui.theme.MyApplicationTheme
+import com.julian.buzzerbeater.android.home.HomeScreen
+import com.julian.buzzerbeater.android.routes.AppNavHost
+import com.julian.myapplication.ui.theme.BuzzerBeaterTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             setContent {
-                MyApplicationTheme {
+                BuzzerBeaterTheme {
                     // A surface container using the 'background' color from the theme
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        Greeting(Greeting().greeting())
+                        AppNavHost()
                     }
                 }
             }
@@ -32,15 +33,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(text: String) {
-    Text(text = text)
-}
-
 @Preview
 @Composable
 fun DefaultPreview() {
-    MyApplicationTheme {
-        Greeting("Hello, Android!")
+    BuzzerBeaterTheme {
+        HomeScreen()
     }
 }

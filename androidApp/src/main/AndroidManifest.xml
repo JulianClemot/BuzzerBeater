@@ -25,6 +25,8 @@
     <application
         android:allowBackup="false"
         android:supportsRtl="true"
+        android:label="Buzzer Beater"
+        android:name=".BuzzerBeaterApplication"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
