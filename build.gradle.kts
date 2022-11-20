@@ -1,10 +1,10 @@
-
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     //trick: for the same plugin versions in all sub-modules
-    id("com.android.application").version("7.3.1").apply(false)
-    id("com.android.library").version("7.3.1").apply(false)
-    kotlin("android").version("1.7.10").apply(false)
-    kotlin("multiplatform").version("1.7.10").apply(false)
+    alias(libs.plugins.android.application).apply(false)
+    alias(libs.plugins.android.library).apply(false)
+    alias(libs.plugins.kotlin.android).apply(false)
+    alias(libs.plugins.kotlin.multiplatform).apply(false)
 }
 
 tasks.register("clean", Delete::class) {
