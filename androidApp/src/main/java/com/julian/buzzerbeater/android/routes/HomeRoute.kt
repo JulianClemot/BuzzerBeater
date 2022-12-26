@@ -4,8 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import com.julian.buzzerbeater.android.home.HomeScreen
 
-class HomeRoute(
-) : NavigationRoute() {
+class HomeRoute : NavigationRoute() {
     override val route = "home"
 
     @Composable
