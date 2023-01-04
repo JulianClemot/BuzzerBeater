@@ -5,16 +5,18 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentFilter
 
+
 actual class BluetoothHelper(private val context: Context) {
-    actual var isBluetoothEnabled =
-        (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter.isEnabled
+    private val bluetoothAdapter =
+        (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+    actual var isBluetoothEnabled = bluetoothAdapter.isEnabled
 
     private val bluetoothStateReceiver = BluetoothStateReceiver(isBluetoothEnabled)
 
     val bluetoothState = bluetoothStateReceiver.state
 
-    actual fun toggleBluetooth(shouldActivate: Boolean) {
-
+    actual fun activateBluetooth() {
+        //Nothing to do so far
     }
 
     actual fun startListeningBluetoothStatus() {
