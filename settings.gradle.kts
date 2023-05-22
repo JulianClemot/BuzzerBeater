@@ -16,4 +16,3 @@ dependencyResolutionManagement {
 rootProject.name = "Buzzer_Beater"
 include(":androidApp")
 include(":shared")
-enableFeaturePreview("VERSION_CATALOGS")

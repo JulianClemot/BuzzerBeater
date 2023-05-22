@@ -17,9 +17,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0"
+        kotlinCompilerExtensionVersion = libs.versions.composeAndroidCompiler.get()
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -29,16 +29,26 @@ android {
             isMinifyEnabled = false
         }
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
+    }
+
+    kotlinOptions {
+        jvmTarget = "19"
+    }
 }
 
 dependencies {
     implementation(project(":shared"))
     implementation(libs.core)
+    implementation(libs.coroutines)
     implementation(libs.timber)
     implementation(libs.navigation)
     implementation(libs.lifecycle)
     implementation(libs.bundles.compose)
-    implementation(libs.bundles.di)
+    implementation(libs.bundles.diAndroid)
 
     androidTestImplementation(libs.bundles.uiTesting)
     androidTestImplementation(libs.bundles.composeTesting)
