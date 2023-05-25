@@ -1,56 +1,79 @@
 [versions]
-gradlePlugin = "8.0.2"
-kotlin = "1.8.10"
-core = "1.9.0"
-lifecycle = "2.5.1"
-compose = "1.3.1"
+compose = "1.4.3"
+composeActivity = "1.7.2"
 composeAndroidCompiler = "1.4.3"
-composeActivity = "1.6.1"
-composePermissions = "0.27.1"
-material3 = "1.0.1"
+composePermissions = "0.30.1"
+core = "1.9.0"
+coroutinesVersion = "1.7.1"
+dependencyGetVersionToolVersion = "0.46.0"
+dependencyUpdateToolVersion = "0.8.0"
+espresso = "3.5.1"
+gradlePlugin = "8.0.2"
 junit = "4.13.2"
-junitAndroid = "1.1.4"
-espresso = "3.5.0"
-navigation = "2.5.2"
-timber = "5.0.1"
+junitAndroid = "1.1.5"
 koinAndroid = "3.4.4"
 koinCoreVersion = "3.4.0"
-dependencyGetVersionToolVersion="0.46.0"
-dependencyUpdateToolVersion="0.8.0"
-coroutinesVersion="1.7.1"
+# @pin
+kotlin = "1.8.10"
+lifecycle = "2.6.1"
+material3 = "1.1.0"
+navigation = "2.5.3"
+timber = "5.0.1"
 
 [libraries]
-core = { module = "androidx.core:core-ktx", version.ref = "core" }
-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidJUnit = { module = "androidx.test.ext:junit", version.ref = "junitAndroid" }
 compose = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "composeActivity" }
-compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose" }
+compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 compose-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "composePermissions" }
+compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+core = { module = "androidx.core:core-ktx", version.ref = "core" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-junit = { module = "junit:junit", version.ref = "junit" }
-androidJUnit = { module = "androidx.test.ext:junit", version.ref = "junitAndroid" }
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+junit = { module = "junit:junit", version.ref = "junit" }
+koin = { module = "io.insert-koin:koin-core", version.ref = "koinCoreVersion" }
+koin-android = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
+koinTest = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinCoreVersion" }
+lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-koin-android = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
-koin = { module = "io.insert-koin:koin-core", version.ref = "koinCoreVersion" }
-koinTest = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinCoreVersion" }
-
 
 [bundles]
-compose = ["compose", "compose-activity", "compose-preview", "material3", "compose-permissions", "compose-icons", "compose-viewmodel"]
-composeTesting =["compose-junit"]
-composeDebug =["compose-tooling", "compose-manifest"]
-unitTesting = ["junit", "koinTest"]
-uiTesting = ["androidJUnit", "espresso"]
-di = ["koin"]
-diAndroid = ["koin-android"]
+compose = [
+    "compose",
+    "compose-activity",
+    "compose-icons",
+    "compose-permissions",
+    "compose-preview",
+    "compose-viewmodel",
+    "material3",
+]
+composeDebug = [
+    "compose-manifest",
+    "compose-tooling",
+]
+composeTesting = [
+    "compose-junit",
+]
+di = [
+    "koin",
+]
+diAndroid = [
+    "koin-android",
+]
+uiTesting = [
+    "androidJUnit",
+    "espresso",
+]
+unitTesting = [
+    "junit",
+    "koinTest",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradlePlugin" }
