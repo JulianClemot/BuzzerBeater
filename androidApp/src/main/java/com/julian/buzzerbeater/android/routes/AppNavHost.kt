@@ -14,6 +14,8 @@ fun AppNavHost(
     navController: NavHostController = rememberNavController(),
 ) {
     val homeRoute = HomeRoute()
+
+
     NavHost(
         modifier = modifier,
         navController = navController,

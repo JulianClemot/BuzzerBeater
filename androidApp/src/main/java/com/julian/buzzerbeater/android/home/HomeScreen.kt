@@ -1,31 +1,50 @@
 package com.julian.buzzerbeater.android.home
 
-import android.bluetooth.BluetoothAdapter
 import android.content.Intent
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.julian.buzzerbeater.BluetoothHelper
 import com.julian.buzzerbeater.android.composables.BluetoothPermissionCheck
 import com.julian.myapplication.ui.theme.BuzzerBeaterTheme
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.get
+import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(bluetoothHelper: BluetoothHelper = get()) {
+fun HomeScreen(
+    homeScreenUiState: HomeScreenUiState,
+    startBluetoothListener: () -> Unit,
+    stopBluetoothListener: () -> Unit,
+    onClickTurnOnBluetooth: (launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) -> Unit
+) {
+    Timber.e("ui state : $homeScreenUiState")
     BluetoothPermissionCheck {
         val scope = rememberCoroutineScope()
-        val isBluetoothEnabled =
-            bluetoothHelper.bluetoothState.collectAsState(bluetoothHelper.isBluetoothEnabled)
         val snackbarHostState = remember { SnackbarHostState() }
         val lifecycleOwner = LocalLifecycleOwner.current
         val launcher = rememberLauncherForActivityResult(
@@ -36,9 +55,9 @@ fun HomeScreen(bluetoothHelper: BluetoothHelper = get()) {
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
         ) { paddingValues ->
             DisposableEffect(key1 = lifecycleOwner) {
-                bluetoothHelper.startListeningBluetoothStatus()
+                startBluetoothListener()
                 onDispose {
-                    bluetoothHelper.stopListeningBluetoothStatus()
+                    stopBluetoothListener()
                 }
             }
             Column(
@@ -65,7 +84,7 @@ fun HomeScreen(bluetoothHelper: BluetoothHelper = get()) {
                                 .height(120.dp)
                                 .padding(horizontal = 4.dp),
                             shape = RoundedCornerShape(8.dp),
-                            enabled = isBluetoothEnabled.value,
+                            enabled = homeScreenUiState.shouldStartGameEnabled,
                             onClick = { /*TODO*/ }) {
                             Text(text = "Rejoindre une partie")
                         }
@@ -75,7 +94,7 @@ fun HomeScreen(bluetoothHelper: BluetoothHelper = get()) {
                                 .height(120.dp)
                                 .padding(horizontal = 4.dp),
                             shape = RoundedCornerShape(8.dp),
-                            enabled = isBluetoothEnabled.value,
+                            enabled = homeScreenUiState.shouldStartHostEnabled,
                             onClick = { /*TODO*/ }) {
                             Text(text = "Héberger une partie")
                         }
@@ -83,7 +102,7 @@ fun HomeScreen(bluetoothHelper: BluetoothHelper = get()) {
                 }
 
                 SideEffect {
-                    if (!isBluetoothEnabled.value) {
+                    if (homeScreenUiState.shouldDisplaySnackbar) {
                         scope.launch {
                             snackbarHostState.showSnackbar(
                                 "Vous devez activer votre Bluetooth pour jouer",
@@ -93,12 +112,9 @@ fun HomeScreen(bluetoothHelper: BluetoothHelper = get()) {
                             ).also { snackbarResult ->
                                 when (snackbarResult) {
                                     SnackbarResult.ActionPerformed -> {
-                                        launcher.launch(
-                                            Intent(
-                                                BluetoothAdapter.ACTION_REQUEST_ENABLE
-                                            )
-                                        )
+                                        onClickTurnOnBluetooth(launcher)
                                     }
+
                                     SnackbarResult.Dismissed -> Unit
                                 }
                             }
@@ -116,6 +132,15 @@ fun HomeScreen(bluetoothHelper: BluetoothHelper = get()) {
 @Composable
 fun DefaultPreview() {
     BuzzerBeaterTheme {
-        HomeScreen()
+        HomeScreen(
+            HomeScreenUiState(
+                shouldStartHostEnabled = true,
+                shouldStartGameEnabled = true,
+                shouldDisplaySnackbar = true
+            ),
+            {},
+            {},
+            {},
+        )
     }
 }
